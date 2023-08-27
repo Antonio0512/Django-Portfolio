@@ -54,7 +54,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portfolio_app.wsgi.application'
 
-
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("DB_ENGINE"),
@@ -65,7 +64,6 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT"),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -96,15 +94,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles')
+    os.path.join(BASE_DIR, 'static')
 ]
+STATIC_ROOT = os.environ.get('STATIC_ROOT')
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
