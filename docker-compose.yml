@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3"
 
 services:
   web:
@@ -13,6 +13,7 @@ services:
       - ./all_staticfiles:/tmp/portfolio-resources/static
     depends_on:
       - postgres
+
   postgres:
     image: postgres
     restart: always

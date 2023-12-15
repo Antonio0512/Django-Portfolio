@@ -1,9 +1,9 @@
 import os
 
 from django.views.generic import TemplateView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.mail import send_mail
-
+from django.contrib import messages
 from .models import *
 from .forms import ContactForm
 
@@ -28,15 +28,21 @@ def contact_view(request):
             email = form.cleaned_data['email']
             message = form.cleaned_data['message']
 
-            send_mail(
-                subject=f'Message from {name}',
-                message=message,
-                from_email=email,
-                recipient_list=[os.environ.get("EMAIL_HOST_USER")],
-                fail_silently=False,
-            )
-
+            full_message = f'Name: {name}\nEmail: {email}\n\nMessage:\n{message}'
+            try:
+                send_mail(
+                    subject=f'Message from {name}',
+                    message=full_message,
+                    from_email=os.environ.get("EMAIL_HOST_USER"),
+                    recipient_list=[os.environ.get("EMAIL_HOST_USER")],
+                    fail_silently=False,
+                )
+                messages.success(request, 'Message sent successfully')
+            except Exception as e:
+                messages.error(request, f"Error: {str(e)}")
+        else:
+            messages.error(request, 'Form validation failed')
     else:
         form = ContactForm()
 
-    return render(request, 'home.html', {'form': form})
+    return redirect("home")
